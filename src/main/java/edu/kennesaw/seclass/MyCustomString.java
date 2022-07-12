@@ -15,7 +15,6 @@ public class MyCustomString implements MyCustomStringInterface {
 
     @Override
     public int countNumbers() {
-        StringBuffer tmpString = new StringBuffer();
         int count=0;
         boolean inNumber=false;
         //avoid null pointer exception!
@@ -47,7 +46,6 @@ public class MyCustomString implements MyCustomStringInterface {
             throw new IllegalArgumentException();
         }
         StringBuffer tmpString = new StringBuffer();
-        StringBuffer resultString = new StringBuffer();
         StringBuffer currString = new StringBuffer(string);
 
         int i;
