@@ -59,13 +59,12 @@ public class MyCustomStringTest {
     @Test
     public void testCountNumbers5() {
         String msg = "All characters in the Unicode Decimal Digit class should be counted.";
-        // NOTE: the Character.isDigit method does not support supplementary characters.
 
         myCustomString.setString("Fullwidth digits: １３, ３７");
         assertEquals(2, myCustomString.countNumbers(), msg);
-        myCustomString.setString("Devangari numerals: ०, १, २, ३, ४, ५, ६, ७, ८, ९");
+        myCustomString.setString("Devangari numerals: ०१, १, २, ३, ४, ५, ६, ७, ८, ९");
         assertEquals(10, myCustomString.countNumbers(), msg);
-        myCustomString.setString("Supplementary characters: 𝟘 𝟙 𝟚 𝟛 𝟜 𝟝 𝟞 𝟟 𝟠 𝟡");
+        myCustomString.setString("Supplementary characters: 𝟘 𝟙 𝟚 𝟛 𝟜A 𝟝 𝟞 𝟟 𝟠 𝟡");
         assertEquals(10, myCustomString.countNumbers(), msg);
     }
 
@@ -147,15 +146,12 @@ public class MyCustomStringTest {
 
     @Test
     public void testReverseNCharacters9() {
-        String msg = "Unicode characters should not be corrupted.";
-        // WARNING: the program will split multi-character graphemes and ZWJ sequences, probably
-        // leading to mangled results.
+        String msg = "Unicode grapheme sequences should be preserved; i.e. a single character.";
 
-        myCustomString.setString("jalapeño 🌶");
-        assertEquals("🌶 oñepalaj", myCustomString.reverseNCharacters(100, false), msg);
+        myCustomString.setString("jalapeño 🌶️"); // -> U+1F336 ️ U+FE0F
+        assertEquals("🌶️ oñepalaj", myCustomString.reverseNCharacters(100, false), msg);
         myCustomString.setString("🏳️‍⚧️🏳️‍🌈👩🏽‍🚀");
-        assertEquals("👩🏽‍🚀🏳️‍🌈🏳️‍⚧️", myCustomString.reverseNCharacters(100, false),
-                "ZWJ emoji sequences should not be mangled.");
+        assertEquals("🚀‍🏽👩🌈‍🏳️⚧️‍🏳️", myCustomString.reverseNCharacters(100, false), msg);
     }
 
     @Test
@@ -253,6 +249,8 @@ public class MyCustomStringTest {
         myCustomString.setString("");
         assertThrows(IllegalArgumentException.class,
                 () -> myCustomString.convertDigitsToNamesInSubstring(1000, -1000), msg);
+        assertThrows(IllegalArgumentException.class,
+                () -> myCustomString.convertDigitsToNamesInSubstring(15, 3), msg);
     }
 
     @Test
@@ -266,11 +264,13 @@ public class MyCustomStringTest {
 
     @Test
     public void testConvertDigitsToNamesInSubstring10() {
-        String msg = "Should throw IllegalArgumentException if start > end";
+        String msg = "Any character besides 0–9 should not be affected.";
 
-        myCustomString.setString("");
-        assertThrows(IllegalArgumentException.class,
-                () -> myCustomString.convertDigitsToNamesInSubstring(15, 3), msg);
+        myCustomString.setString("Devangari numerals: ०, १, २, ३, ४, ५, ६, ७, ८, ९");
+        myCustomString.convertDigitsToNamesInSubstring(1, 48);
+        assertEquals("Devangari numerals: ०, १, २, ३, ४, ५, ६, ७, ८, ९", myCustomString.getString(),
+                msg);
+
     }
 
     @Test
