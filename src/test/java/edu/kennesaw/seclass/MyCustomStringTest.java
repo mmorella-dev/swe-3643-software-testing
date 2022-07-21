@@ -64,7 +64,7 @@ public class MyCustomStringTest {
         assertEquals(2, myCustomString.countNumbers(), msg);
         myCustomString.setString("Devangari numerals: ०१, १, २, ३, ४, ५, ६, ७, ८, ९");
         assertEquals(10, myCustomString.countNumbers(), msg);
-        myCustomString.setString("Supplementary characters: 𝟘 𝟙 𝟚 𝟛 𝟜A 𝟝 𝟞 𝟟 𝟠 𝟡");
+        myCustomString.setString("Mathematical characters: 𝟘 𝟙 𝟚 𝟛 𝟜 𝟝 𝟞 𝟟 𝟠 𝟡");
         assertEquals(10, myCustomString.countNumbers(), msg);
     }
 
@@ -146,7 +146,7 @@ public class MyCustomStringTest {
 
     @Test
     public void testReverseNCharacters9() {
-        String msg = "Unicode grapheme sequences should be preserved; i.e. a single character.";
+        String msg = "Unicode grapheme clusters should be preserved; i.e. treated as a single character.";
 
         myCustomString.setString("jalapeño 🌶️"); // -> U+1F336 ️ U+FE0F
         assertEquals("🌶️ oñepalaj", myCustomString.reverseNCharacters(100, false), msg);
@@ -264,13 +264,12 @@ public class MyCustomStringTest {
 
     @Test
     public void testConvertDigitsToNamesInSubstring10() {
-        String msg = "Any character besides 0–9 should not be affected.";
+        String msg = "Characters besides 0–9 should not be affected.";
 
         myCustomString.setString("Devangari numerals: ०, १, २, ३, ४, ५, ६, ७, ८, ९");
         myCustomString.convertDigitsToNamesInSubstring(1, 48);
         assertEquals("Devangari numerals: ०, १, २, ३, ४, ५, ६, ७, ८, ९", myCustomString.getString(),
                 msg);
-
     }
 
     @Test
