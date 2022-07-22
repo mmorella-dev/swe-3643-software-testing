@@ -58,14 +58,14 @@ public class MyCustomStringTest {
 
     @Test
     public void testCountNumbers5() {
-        String msg = "All characters in the Unicode Decimal Digit class should be counted.";
+        String msg = "Only the Latin numerals 0–9 count as digits.";
 
         myCustomString.setString("Fullwidth digits: １３, ３７");
-        assertEquals(2, myCustomString.countNumbers(), msg);
+        assertEquals(0, myCustomString.countNumbers(), msg);
         myCustomString.setString("Devangari numerals: ०१, १, २, ३, ४, ५, ६, ७, ८, ९");
-        assertEquals(10, myCustomString.countNumbers(), msg);
+        assertEquals(0, myCustomString.countNumbers(), msg);
         myCustomString.setString("Mathematical characters: 𝟘 𝟙 𝟚 𝟛 𝟜 𝟝 𝟞 𝟟 𝟠 𝟡");
-        assertEquals(10, myCustomString.countNumbers(), msg);
+        assertEquals(0, myCustomString.countNumbers(), msg);
     }
 
     @Test
@@ -148,8 +148,8 @@ public class MyCustomStringTest {
     public void testReverseNCharacters9() {
         String msg = "Unicode grapheme clusters should be preserved; i.e. treated as a single character.";
 
-        myCustomString.setString("jalapeño 🌶️"); // -> U+1F336 ️ U+FE0F
-        assertEquals("🌶️ oñepalaj", myCustomString.reverseNCharacters(100, false), msg);
+        myCustomString.setString("jalapeń̹o 🌶️"); // -> U+1F336 ️ U+FE0F
+        assertEquals("🌶️ oń̹epalaj", myCustomString.reverseNCharacters(100, false), msg);
         myCustomString.setString("🏳️‍⚧️🏳️‍🌈👩🏽‍🚀");
         assertEquals("🚀‍🏽👩🌈‍🏳️⚧️‍🏳️", myCustomString.reverseNCharacters(100, false), msg);
     }
